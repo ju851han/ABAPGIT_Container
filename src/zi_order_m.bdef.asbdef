@@ -1,0 +1,15 @@
+managed; // implementation in class zbp_i_order_m unique;
+with draft;
+
+define behavior for ZI_ORDER_M alias Order
+implementation in class zbp_i_order unique
+persistent table ZAT_ORDER
+draft table zdt_order
+lock master total etag LastChangedAT
+//authorization master ( instance )
+//etag master <field_name>
+{
+  create;
+  update;
+  delete;
+}
