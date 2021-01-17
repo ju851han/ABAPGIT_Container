@@ -3,7 +3,7 @@
 {
 "FROM":
 [
-"ZAT_ORDER"
+"ZI_ORDER"
 ],
 "ASSOCIATED":
 [
@@ -11,7 +11,9 @@
 "ZI_CUSTOMER"
 ],
 "BASE":
-[],
+[
+"ZI_ORDER"
+],
 "ANNO_REF":
 [],
 "VERSION":0,
