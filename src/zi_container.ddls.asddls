@@ -1,4 +1,4 @@
-@AccessControl.authorizationCheck: #CHECK
+@AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'BO (Data Model) View for Container'
 define root view entity ZI_Container
   as select from zat_container
