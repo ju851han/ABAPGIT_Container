@@ -1,0 +1,4 @@
+@EndUserText.label: 'Service Definition for Order'
+define service ZUI_ORDER {
+  expose ZC_Order as Order_Container;
+}
