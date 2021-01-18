@@ -10,17 +10,17 @@ define root view entity ZC_CUSTOMER_M
   as projection on ZI_CUSTOMER_M as Customer
   //composition of target_data_source_name as _association_name
 {
-  @UI.facet: [{id:       'Order',
+  @UI.facet: [{id:       'Customer',
                    purpose:  #STANDARD,
                    type:     #IDENTIFICATION_REFERENCE,
-                   label:    'Order',
+                   label:    'Customer',
                    position: 10 }]
-      @UI:{ identification:[{position:1, label: 'Order UUID' }]}
+      @UI:{ identification:[{position:1, label: 'Customer UUID' }]}
       @UI.hidden: true
   key CustomerUUID,
     @UI: {
       lineItem:       [ { position: 10, importance: #HIGH } ],
-      identification: [ { position: 10, label: 'Order ID' } ] }
+      identification: [ { position: 10, label: 'Customer ID' } ] }
       @Search.defaultSearchElement: true
       CustomerID,
           @UI: {
