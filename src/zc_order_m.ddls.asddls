@@ -30,7 +30,7 @@ define root view entity ZC_ORDER_M
           lineItem:       [ { position: 11, importance: #HIGH } ],
           identification: [ { position: 11, label: 'Customer ID' } ],
           selectionField: [ { position: 11 } ] }
-      //      @Consumption.valueHelpDefinition: [{entity: {name: 'ZI_Customer', element: 'CustomerID'} }]
+      //      @Consumption.valueHelpDefinition: [{entity: {name: 'ZI_Customer_M', element: 'CustomerID'} }]
       //      @ObjectModel.text.element: ['CustomerName']
       @Search.defaultSearchElement: true
       CustomerID,

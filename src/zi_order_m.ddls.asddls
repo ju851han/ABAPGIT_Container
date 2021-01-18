@@ -6,7 +6,7 @@ define root view entity ZI_ORDER_M
   //composition of target_data_source_name as _association_name
 
   /* Associations */
-  association [0..*] to ZI_Customer  as _Customer  on $projection.CustomerID = _Customer.CustomerID
+  association [0..*] to ZI_CUSTOMER_M as _Customer  on $projection.CustomerID = _Customer.CustomerID
   association [0..*] to ZI_Container as _Container on $projection.ContainerID = _Container.ContainerID
 
 {
