@@ -104,6 +104,8 @@ define root view entity ZC_ORDER_M
       LastChangedAt,
       @UI.hidden: true
       LastChangedBy,
+      @UI.hidden: true
+      LastLocalChangedAt,
       /*  Make association public */
       _Container,
       _Customer

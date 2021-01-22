@@ -7,9 +7,36 @@ persistent table ZAT_ORDER
 draft table zdt_order
 lock master total etag LastChangedAT
 //authorization master ( instance )
-//etag master <field_name>
+etag master LastLocalChangedAt
 {
   create;
   update;
   delete;
+
+  mapping for zat_order{
+      OrderUUID          = order_uuid;
+      OrderID            = order_id;
+      CustomerID         = customer_id;
+      ContainerID        = container_id;
+      Category           = category;
+      PricePerT          = price_per_t;
+      TotalPrice         = total_price;
+      CurrencyCode       = currency_code;
+      Remarks            = remarks;
+      Status             = status;
+      DeliveryDate       = delivery_date;
+      DeliveryTime       = delivery_time;
+      DropOffDate        = drop_off_date;
+      DropOffTime        = drop_off_time;
+      DestCity           = dest_city;
+      DestPostalCode     = dest_postal_code;
+      DestStreet         = dest_street;
+      DestCountryCode    = dest_country_code;
+      CreatedAt          = created_at;
+      CreatedBy          = created_by;
+      LastChangedAt      = last_changed_at;
+      LastChangedBy      = last_changed_by;
+      LastLocalChangedAt = last_local_changed_at;
+  }
+
 }
