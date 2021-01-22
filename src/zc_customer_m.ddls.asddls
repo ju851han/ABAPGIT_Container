@@ -59,7 +59,9 @@ define root view entity ZC_CUSTOMER_M
       @UI.hidden: true
       LastChangedAt,
       @UI.hidden: true
-      LastChangedBy //,
+      LastChangedBy,
+      @UI.hidden : true
+      LastLocalChangedAt
       // Make association public
       //    _association_name
 }

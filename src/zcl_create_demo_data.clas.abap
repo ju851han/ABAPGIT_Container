@@ -43,17 +43,15 @@ last_changed_at = zv_tsl last_changed_by = 'ADMIN'  )
      ( order_uuid = NEW cl_system_uuid( )->if_system_uuid~create_uuid_x16( ) order_id = '22' customer_id = '100' container_id = '2' category = 'EARTH&SOIL' price_per_t = '50' total_price = '500' currency_code = 'EUR' remarks = 'Ordered by Telephone'
 dest_city = 'Konstanz' dest_postal_code = '78462' dest_street = 'Alfred-Wachtel-Straße 8' dest_country_code = 'DE' status = 'O' delivery_date = '20210202' delivery_time = '170000' drop_off_date = '' drop_off_time = '' created_at = zv_tsl created_by =
 'ADMIN' last_changed_at = zv_tsl last_changed_by = 'ADMIN'  )
-
         ).
 
         it_customer = VALUE #(
-        ( customer_uuid = NEW cl_system_uuid( )->if_system_uuid~create_uuid_x16( ) customer_id = '100' first_name = 'Max' last_name = 'Mustermann' company_name = '' city = 'Wien' postal_code = '1010' street = 'Taborstraße 1' country_code = 'AT'
-created_at
-        =  zv_tsl created_by = 'ADMIN' last_changed_at = zv_tsl last_changed_by = 'ADMIN'  )
-        ( customer_uuid = NEW cl_system_uuid( )->if_system_uuid~create_uuid_x16( ) customer_id = '101' first_name = 'Tobias' last_name = 'Brendgens' company_name = 'HTWG Konstanz' city = 'Konstanz' postal_code = '78462' street = 'Alfred-Wachtel-Straße 8'
-        country_code = 'DE' created_at = zv_tsl created_by = 'ADMIN' last_changed_at = zv_tsl last_changed_by = 'ADMIN'  )
-        ( customer_uuid = NEW cl_system_uuid( )->if_system_uuid~create_uuid_x16( ) customer_id = '102' first_name = 'Susanne' last_name = 'Saner' company_name = '' city = 'Basel' postal_code = '4001' street = 'Austraße 3' country_code = 'CH' created_at =
-        zv_tsl created_by = 'ADMIN' last_changed_at = zv_tsl last_changed_by = 'ADMIN'  )
+( customer_uuid = NEW cl_system_uuid( )->if_system_uuid~create_uuid_x16( ) customer_id = '100' first_name = 'Max' last_name = 'Mustermann' company_name = '' city = 'Wien' postal_code = '1010' street = 'Taborstraße 1' country_code = 'AT' created_at =
+zv_tsl created_by = 'ADMIN' last_changed_at = zv_tsl last_changed_by = 'ADMIN' last_local_changed_at = zv_tsl  )
+( customer_uuid = NEW cl_system_uuid( )->if_system_uuid~create_uuid_x16( ) customer_id = '101' first_name = 'Tobias' last_name = 'Brendgens' company_name = 'HTWG Konstanz' city = 'Konstanz' postal_code = '78462' street = 'Alfred-Wachtel-Straße 8'
+country_code = 'DE' created_at = zv_tsl created_by = 'ADMIN' last_changed_at = zv_tsl last_changed_by = 'ADMIN' last_local_changed_at = zv_tsl  )
+( customer_uuid = NEW cl_system_uuid( )->if_system_uuid~create_uuid_x16( ) customer_id = '102' first_name = 'Susanne' last_name = 'Saner' company_name = '' city = 'Basel' postal_code = '4001' street = 'Austraße 3' country_code = 'CH' created_at = zv_tsl
+created_by = 'ADMIN' last_changed_at = zv_tsl last_changed_by = 'ADMIN' last_local_changed_at = zv_tsl  )
         ).
 
       CATCH cx_uuid_error INTO DATA(e_text).

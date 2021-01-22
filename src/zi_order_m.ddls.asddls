@@ -7,8 +7,8 @@ define root view entity ZI_ORDER_M
 
   /* Associations */
   association [0..*] to ZI_CUSTOMER_M as _Customer  on $projection.CustomerID = _Customer.CustomerID
-  association [0..*] to ZI_Container as _Container on $projection.ContainerID = _Container.ContainerID
-
+  association [0..*] to ZI_Container  as _Container on $projection.ContainerID = _Container.ContainerID
+  
 {
   key order_uuid        as OrderUUID,
       order_id          as OrderID,
