@@ -14,7 +14,7 @@ ENDCLASS.
 CLASS zcl_create_demo_data IMPLEMENTATION.
 
   METHOD if_oo_adt_classrun~main.
-*   define tabletypes
+*   define internal tables (itab)
     DATA it_container TYPE TABLE OF zat_container.
     DATA it_order TYPE TABLE OF zat_order.
     DATA it_customer TYPE TABLE OF zat_customer.
@@ -23,14 +23,14 @@ CLASS zcl_create_demo_data IMPLEMENTATION.
     GET TIME STAMP FIELD DATA(zv_tsl).
 
 
-*   fill internal tables (itab)
+*   fill internal tables
 
     TRY.
         it_container = VALUE #(
-        ( container_uuid = NEW cl_system_uuid( )->if_system_uuid~create_uuid_x16( )  container_id = '1' weight = '2500' available = 'X'  )
-        ( container_uuid = NEW cl_system_uuid( )->if_system_uuid~create_uuid_x16( ) container_id = '2' weight = '1000' available = ''  )
-        ( container_uuid = NEW cl_system_uuid( )->if_system_uuid~create_uuid_x16( ) container_id = '3' weight = '2500' available = 'X'  )
-     ).
+   ( container_uuid = NEW cl_system_uuid( )->if_system_uuid~create_uuid_x16( ) container_id = '1' max_payload = '21.67' payload_unit_of_measure = 't' available = 'X'  )
+   ( container_uuid = NEW cl_system_uuid( )->if_system_uuid~create_uuid_x16( ) container_id = '2' max_payload = '25.44' payload_unit_of_measure = 't' available = ''  )
+   ( container_uuid = NEW cl_system_uuid( )->if_system_uuid~create_uuid_x16( ) container_id = '3' max_payload = '26.48' payload_unit_of_measure = 't' available = 'X'  )
+   ).
 
 
         it_order = VALUE #(
