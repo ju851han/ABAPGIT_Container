@@ -3,8 +3,8 @@ with draft;
 
 define behavior for ZI_CUSTOMER_M alias Customer
 implementation in class zbp_i_customer unique
-persistent table ZAT_CUSTOMER
-draft table ZDT_CUSTOMER
+persistent table zat_customer
+draft table zdt_customer
 lock master total etag LastChangedAt
 //authorization master ( instance )
 etag master LastLocalChangedAt
@@ -13,22 +13,26 @@ etag master LastLocalChangedAt
   update;
   delete;
 
+  field ( numbering : managed, readonly ) CustomerUUID;
+  field ( readonly ) CustomerID;
+  field ( readonly ) CreatedAt, CreatedBy, LastChangedAt, LastChangedBy, LastLocalChangedAt;
 
-  mapping for zat_customer{
-      CustomerUUID       = customer_uuid;
-      CustomerID         = customer_id;
-      FirstName          = first_name;
-      LastName           = last_name;
-      CompanyName        = company_name;
-      PostalCode         = postal_code;
-      City               = city;
-      Street             = street;
-      CountryCode        = country_code;
-      CreatedAt          = created_at;
-      CreatedBy          = created_by;
-      LastChangedAt      = last_changed_at;
-      LastChangedBy      = last_changed_by;
-      LastLocalChangedAt = last_local_changed_at;
+  mapping for zat_customer
+  {
+    CustomerUUID = customer_uuid;
+    CustomerID = customer_id;
+    FirstName = first_name;
+    LastName = last_name;
+    CompanyName = company_name;
+    PostalCode = postal_code;
+    City = city;
+    Street = street;
+    CountryCode = country_code;
+    CreatedAt = created_at;
+    CreatedBy = created_by;
+    LastChangedAt = last_changed_at;
+    LastChangedBy = last_changed_by;
+    LastLocalChangedAt = last_local_changed_at;
   }
 
 }
