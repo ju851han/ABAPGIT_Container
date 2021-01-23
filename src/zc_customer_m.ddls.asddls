@@ -2,7 +2,12 @@
 @EndUserText.label: 'Projection BO View for Customer'
 
 @UI:{
-headerInfo: {typeName:'Customer', typeNamePlural:'Customers', title: { type: #STANDARD, value: 'CustomerID'}}}
+headerInfo: {typeName:'Customer',
+             typeNamePlural:'Customers',
+             title: { type: #STANDARD, value: 'CustomerID'}},
+   // Sort by CustomerID (Lowest CustomerID is on first row)          
+             presentationVariant: [{ sortOrder: [{ by: 'CustomerID', direction: #ASC }], visualizations: [{type: #AS_LINEITEM }] }]
+             }
 
 @Search.searchable: true
 @ObjectModel.semanticKey: ['CustomerID']

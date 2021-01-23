@@ -2,7 +2,12 @@
 @EndUserText.label: 'Projection BO View for Order'
 
 @UI:{
-headerInfo: {typeName:'Order', typeNamePlural:'Orders', title: { type: #STANDARD, value: 'OrderID'}}}
+headerInfo: {typeName:'Order',
+             typeNamePlural:'Orders',
+             title: { type: #STANDARD, value: 'OrderID'}},
+// Sort by Delivery Date (Youngest Date is on first row)
+presentationVariant: [{ sortOrder: [{ by: 'DeliveryDate', direction: #DESC }], visualizations: [{type: #AS_LINEITEM }] }]
+}
 
 
 @Search.searchable: true
@@ -34,7 +39,7 @@ define root view entity ZC_ORDER_M
 //           @ObjectModel.text.element: ['CustomerName']
       @Search.defaultSearchElement: true
       CustomerID,
-      //      _Customer.LastName as CustomerName,
+//          _Customer.LastName as CustomerName,
       @UI: {
           lineItem:       [ { position: 12, importance: #HIGH } ],
           identification: [ { position: 12, label: 'Container ID' } ],
