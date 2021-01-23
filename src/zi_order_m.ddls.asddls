@@ -29,7 +29,6 @@ define root view entity ZI_ORDER_M
       @Semantics.address.city: true
       dest_city             as DestCity,
       dest_postal_code      as DestPostalCode,
-      @Semantics.address.street: true
       dest_street           as DestStreet,
       dest_country_code     as DestCountryCode,
       // Admin data
