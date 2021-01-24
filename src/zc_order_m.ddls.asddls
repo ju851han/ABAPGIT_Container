@@ -36,15 +36,15 @@ define root view entity ZC_ORDER_M
           identification: [ { position: 11, label: 'Customer ID' } ],
           selectionField: [ { position: 11 } ] }
       @Consumption.valueHelpDefinition: [{entity: {name: 'ZI_Customer_M', element: 'CustomerID'} }]
-//           @ObjectModel.text.element: ['CustomerName']
+      //           @ObjectModel.text.element: ['CustomerName']
       @Search.defaultSearchElement: true
       CustomerID,
-//          _Customer.LastName as CustomerName,
+      //          _Customer.LastName as CustomerName,
       @UI: {
           lineItem:       [ { position: 12, importance: #HIGH } ],
           identification: [ { position: 12, label: 'Container ID' } ],
           selectionField: [ { position: 12 } ] }
-          @Consumption.valueHelpDefinition: [{entity: {name: 'ZI_Container', element: 'ContainerID' }}]
+      @Consumption.valueHelpDefinition: [{entity: {name: 'ZI_Container', element: 'ContainerID' }}]
       @Search.defaultSearchElement: true
       ContainerID,
       @UI: {
@@ -77,28 +77,37 @@ define root view entity ZC_ORDER_M
       lineItem:       [ { position: 51, importance: #MEDIUM } ],
       identification: [ { position: 51, label: 'Delivery Date' } ] }
       DeliveryTime,
-      //      @UI: {
-      //       lineItem:       [ { position: 52, importance: #MEDIUM } ],
-      //       identification: [ { position: 52, label: 'Drop Off Date' } ],
-      //       selectionField: [ { position: 52 } ] }
-      //      DropOffDate,
-      //      @UI: {
-      //      lineItem:       [ { position: 53, importance: #MEDIUM } ],
-      //      identification: [ { position: 53, label: 'Drop Off Time' } ],
-      //      selectionField: [ { position: 53 } ] }
-      //      DropOffTime,
-      //      DestCity,
-      //      DestPostalCode,
-      //      DestStreet,
-      //      DestCountryCode,
       @UI: {
-      lineItem:       [ { position: 60, importance: #MEDIUM }
-      //      , {type: #FOR_ACTION, dataAction: 'setDropOff', label:'setDropOff'}
-        ],
-      identification: [ { position: 60, label: 'Status' }
-      //      , {type: #FOR_ACTION, dataAction: 'setDropOff', label:'setDropOff'}
+       lineItem:       [ { position: 52, importance: #MEDIUM },
+        {type: #FOR_ACTION, dataAction: 'setDropOffDate', label: 'Container dropped off'} ],
+       identification: [ { position: 52, label: 'Drop Off Date' } ] }
+      DropOffDate,
+      @UI: {
+      lineItem:       [ { position: 53, importance: #MEDIUM } ],
+      identification: [ { position: 53, label: 'Drop Off Time' } ]}
+      DropOffTime,
+      @UI: {
+      lineItem:       [ { position: 60, importance: #MEDIUM }],
+      identification: [ { position: 60, label: 'Destination City' }]}
+      DestCity,
+      @UI: {
+      lineItem:       [ { position: 61, importance: #MEDIUM }],
+      identification: [ { position: 61, label: 'Destination PLZ' }]}
+      DestPostalCode,
+      @UI: {
+      lineItem:       [ { position: 62, importance: #MEDIUM }],
+      identification: [ { position: 62, label: 'Destination Street' }]}
+      DestStreet,
+      @UI: {
+      lineItem:       [ { position: 63, importance: #MEDIUM }],
+      identification: [ { position: 63, label: 'Destination Street' }]}
+      DestCountryCode,
+      @UI: {
+      lineItem:       [ { position: 70, importance: #MEDIUM }],
+      identification: [ { position: 70, label: 'Status' }
+//            , {type: #FOR_ACTION, dataAction: 'setDropOff', label:'setDropOff'}
        ],
-      selectionField: [ { position: 60 } ] }
+      selectionField: [ { position: 70 } ] }
       Status,
       // Admin data
       @UI.hidden: true
@@ -114,4 +123,6 @@ define root view entity ZC_ORDER_M
       /*  Make association public */
       _Container,
       _Customer
+
+
 }

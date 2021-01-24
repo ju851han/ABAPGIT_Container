@@ -16,7 +16,10 @@ etag master LastLocalChangedAt
   field ( numbering : managed, readonly ) OrderUUID;
   field ( readonly ) OrderID, PricePerT, TotalPrice, Status;
   field ( readonly ) CreatedAt, CreatedBy, LastChangedAt, LastChangedBy, LastLocalChangedAt;
-  field ( mandatory ) CustomerID, ContainerID;
+  field ( mandatory ) CustomerID, ContainerID, Category ;
+
+  action ( features : instance ) setDropOffDate result [1] $self;
+  internal action recalcTotalPrice;
 
   mapping for zat_order
   {
