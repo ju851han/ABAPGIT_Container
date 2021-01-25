@@ -70,21 +70,31 @@ define root view entity ZC_ORDER_M
       Remarks,
       @UI: {
       lineItem:       [ { position: 50, importance: #MEDIUM } ],
-      identification: [ { position: 50, label: 'Delivery Date' } ],
-      selectionField: [ { position: 50 } ] }
+      identification: [ { position: 50, label: 'Delivery Date' } ]//,
+      //selectionField: [ { position: 50 } ] 
+      }
       DeliveryDate,
       @UI: {
       lineItem:       [ { position: 51, importance: #MEDIUM } ],
       identification: [ { position: 51, label: 'Delivery Date' } ] }
       DeliveryTime,
-      @UI: {
+           @UI: {
        lineItem:       [ { position: 52, importance: #MEDIUM },
         {type: #FOR_ACTION, dataAction: 'setDropOffDate', label: 'Container dropped off'} ],
        identification: [ { position: 52, label: 'Drop Off Date' } ] }
-      DropOffDate,
+      DesiredDropOffDate,
       @UI: {
       lineItem:       [ { position: 53, importance: #MEDIUM } ],
       identification: [ { position: 53, label: 'Drop Off Time' } ]}
+      DesiredDropOffTime,
+      @UI: {
+       lineItem:       [ { position: 54, importance: #MEDIUM },
+        {type: #FOR_ACTION, dataAction: 'setDropOffDate', label: 'Container dropped off'} ],
+       identification: [ { position: 54, label: 'Drop Off Date' } ] }
+      DropOffDate,
+      @UI: {
+      lineItem:       [ { position: 55, importance: #MEDIUM } ],
+      identification: [ { position: 55, label: 'Drop Off Time' } ]}
       DropOffTime,
       @UI: {
       lineItem:       [ { position: 60, importance: #MEDIUM }],
@@ -104,9 +114,7 @@ define root view entity ZC_ORDER_M
       DestCountryCode,
       @UI: {
       lineItem:       [ { position: 70, importance: #MEDIUM }],
-      identification: [ { position: 70, label: 'Status' }
-//            , {type: #FOR_ACTION, dataAction: 'setDropOff', label:'setDropOff'}
-       ],
+      identification: [ { position: 70, label: 'Status' }],
       selectionField: [ { position: 70 } ] }
       Status,
       // Admin data

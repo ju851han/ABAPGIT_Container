@@ -13,14 +13,23 @@ etag master LastLocalChangedAt
   update;
   delete;
 
+  //Access rights for the fields
   field ( numbering : managed, readonly ) OrderUUID;
   field ( readonly ) OrderID, PricePerT, TotalPrice, Status;
   field ( readonly ) CreatedAt, CreatedBy, LastChangedAt, LastChangedBy, LastLocalChangedAt;
-  field ( mandatory ) CustomerID, ContainerID, Category ;
+  field ( mandatory ) CustomerID, ContainerID, Category;
 
+  // Providing Methods
   action ( features : instance ) setDropOffDate result [1] $self;
+  internal action setStatus;
   internal action recalcTotalPrice;
 
+  //Determination (handle side effects of modified enities instances
+  determination setInitialStatus on modify { create; }
+//  determination calculateTotalPrice on modify { field ... ,...}
+  determination calculateOrderID on save { create; }
+
+  // Mapping between zat_order and zdt_order
   mapping for zat_order
   {
     OrderUUID = order_uuid;
@@ -35,6 +44,8 @@ etag master LastLocalChangedAt
     Status = status;
     DeliveryDate = delivery_date;
     DeliveryTime = delivery_time;
+     DesiredDropOffDate = desired_drop_off_date;
+    DesiredDropOffTime = desired_drop_off_time;
     DropOffDate = drop_off_date;
     DropOffTime = drop_off_time;
     DestCity = dest_city;
