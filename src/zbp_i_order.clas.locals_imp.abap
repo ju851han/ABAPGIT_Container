@@ -16,14 +16,14 @@ CLASS lhc_Order DEFINITION INHERITING FROM cl_abap_behavior_handler.
     METHODS setDropOffDate FOR MODIFY
       IMPORTING keys FOR ACTION Order~setDropOffDate RESULT result.
 
-    METHODS setInitialStatus FOR DETERMINE ON MODIFY
-      IMPORTING keys FOR Order~setInitialStatus.
+*    METHODS setInitialStatus FOR DETERMINE ON MODIFY
+*      IMPORTING keys FOR Order~setInitialStatus.
 
     METHODS calculateOrderID FOR DETERMINE ON SAVE
       IMPORTING keys FOR Order~calculateOrderID.
 
-    METHODS setStatus FOR MODIFY
-      IMPORTING keys FOR ACTION Order~setStatus.
+    METHODS setStatusFinished FOR MODIFY
+      IMPORTING keys FOR ACTION Order~setStatusFinished RESULT result.
 
 ENDCLASS.
 
@@ -63,9 +63,10 @@ CLASS lhc_Order IMPLEMENTATION.
     result = VALUE #( FOR order IN orders
                          ( %tky      =   order-%tky
                            %param    =   order ) ).
+*   TODO  call setStatusFinished.
   ENDMETHOD.
 
-  METHOD setInitialStatus.
+*  METHOD setInitialStatus.
 *    " Read relevant travel instance data
 *    READ ENTITIES OF zi_order_m IN LOCAL MODE
 *      ENTITY Order
@@ -87,7 +88,7 @@ CLASS lhc_Order IMPLEMENTATION.
 *    REPORTED DATA(update_reported).
 *
 *    reported = CORRESPONDING #( DEEP update_reported ).
-  ENDMETHOD.
+*  ENDMETHOD.
 
   METHOD calculateOrderID.
    " check if OrderID is already filled
@@ -121,26 +122,26 @@ CLASS lhc_Order IMPLEMENTATION.
     reported = CORRESPONDING #( DEEP update_reported ).
   ENDMETHOD.
 
-  METHOD setStatus.
-*   " Set the new overall status
-*    MODIFY ENTITIES OF zi_order_m IN LOCAL MODE
-*      ENTITY Order
-*         UPDATE
-*           FIELDS ( OrderStatus )
-*           WITH VALUE #( FOR key IN keys
-*                           ( %tky         = key-%tky
-*                             TravelStatus = order_status-finished ) )
-*      FAILED failed
-*      REPORTED reported.
-*
-*    " Fill the response table
-*    READ ENTITIES OF zi_order_m IN LOCAL MODE
-*      ENTITY Order
-*        ALL FIELDS WITH CORRESPONDING #( keys )
-*      RESULT DATA(orders).
-*
-*    result = VALUE #( FOR order IN orders
-*                        ( %tky   = order-%tky
-*                          %param = order ) ).
+  METHOD setStatusFinished.
+   " Set the new overall status
+    MODIFY ENTITIES OF zi_order_m IN LOCAL MODE
+      ENTITY Order
+         UPDATE
+           FIELDS ( status )
+           WITH VALUE #( FOR key IN keys
+                           ( %tky         = key-%tky
+                             status       = order_status-finished ) )
+      FAILED failed
+      REPORTED reported.
+
+    " Fill the response table
+    READ ENTITIES OF zi_order_m IN LOCAL MODE
+      ENTITY Order
+        ALL FIELDS WITH CORRESPONDING #( keys )
+      RESULT DATA(orders).
+
+    result = VALUE #( FOR order IN orders
+                        ( %tky   = order-%tky
+                          %param = order ) ).
   ENDMETHOD.
 ENDCLASS.

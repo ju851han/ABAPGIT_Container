@@ -21,12 +21,12 @@ etag master LastLocalChangedAt
 
   // Providing Methods
   action ( features : instance ) setDropOffDate result [1] $self;
-  internal action setStatus;
+  action ( features : instance ) setStatusFinished result [1] $self;
   internal action recalcTotalPrice;
 
   //Determination (handle side effects of modified enities instances
-  determination setInitialStatus on modify { create; }
-//  determination calculateTotalPrice on modify { field ... ,...}
+//  determination setInitialStatus on modify { create; }
+  //  determination calculateTotalPrice on modify { field ... ,...}
   determination calculateOrderID on save { create; }
 
   // Mapping between zat_order and zdt_order
@@ -44,7 +44,7 @@ etag master LastLocalChangedAt
     Status = status;
     DeliveryDate = delivery_date;
     DeliveryTime = delivery_time;
-     DesiredDropOffDate = desired_drop_off_date;
+    DesiredDropOffDate = desired_drop_off_date;
     DesiredDropOffTime = desired_drop_off_time;
     DropOffDate = drop_off_date;
     DropOffTime = drop_off_time;

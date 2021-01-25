@@ -10,4 +10,5 @@ define behavior for ZC_ORDER_M //alias <alias_name>
   //  use association _Customer { create; with draft; }
 
   use action setDropOffDate;
+  use action setStatusFinished;
 }

@@ -3,13 +3,11 @@
 {
 "FROM":
 [
+"ZAT_CUSTOMER",
 "ZAT_ORDER"
 ],
 "ASSOCIATED":
-[
-"ZI_CONTAINER",
-"ZI_CUSTOMER_M"
-],
+[],
 "BASE":
 [],
 "ANNO_REF":

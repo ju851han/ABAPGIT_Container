@@ -6,14 +6,9 @@
 "ZI_ORDER_M"
 ],
 "ASSOCIATED":
-[
-"ZI_CONTAINER",
-"ZI_CUSTOMER_M"
-],
+[],
 "BASE":
-[
-"ZI_ORDER_M"
-],
+[],
 "ANNO_REF":
 [],
 "VERSION":0,
