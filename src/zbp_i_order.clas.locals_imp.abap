@@ -7,8 +7,11 @@ CLASS lhc_Order DEFINITION INHERITING FROM cl_abap_behavior_handler.
           finished TYPE c LENGTH 1 Value 'X', "Finished
      END OF order_status.
 
-    METHODS get_instance_features FOR INSTANCE FEATURES
+ METHODS get_features FOR FEATURES
       IMPORTING keys REQUEST requested_features FOR Order RESULT result.
+
+*    METHODS get_instance_features FOR INSTANCE FEATURES
+*      IMPORTING keys REQUEST requested_features FOR Order RESULT result.
 
     METHODS recalcTotalPrice FOR MODIFY
       IMPORTING keys FOR ACTION Order~recalcTotalPrice.
@@ -29,9 +32,32 @@ ENDCLASS.
 
 CLASS lhc_Order IMPLEMENTATION.
 
-  METHOD get_instance_features.
+*  METHOD get_instance_features.
+* ENDMETHOD.
 
+ METHOD get_features.
+    " Read the travel status of the existing travels
+    READ ENTITIES OF zi_order_m IN LOCAL MODE
+      ENTITY Order
+        FIELDS ( Status ) WITH CORRESPONDING #( keys )
+      RESULT DATA(orders)
+      FAILED failed.
+
+    result =
+      VALUE #(
+        FOR order IN orders
+          LET is_open =   COND #( WHEN order-Status = order_status-open
+                                      THEN if_abap_behv=>fc-o-disabled
+                                      ELSE if_abap_behv=>fc-o-enabled  )
+              is_finished =   COND #( WHEN order-Status = order_status-finished
+                                      THEN if_abap_behv=>fc-o-disabled
+                                      ELSE if_abap_behv=>fc-o-enabled )
+          IN
+            ( %tky                 = order-%tky
+              %action-setStatusFinished = is_finished
+             ) ).
   ENDMETHOD.
+
 
   METHOD recalcTotalPrice.
   ENDMETHOD.

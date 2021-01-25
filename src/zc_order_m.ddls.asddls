@@ -75,26 +75,29 @@ define root view entity ZC_ORDER_M
       identification: [ { position: 50, label: 'Delivery Date' } ]//,
       //selectionField: [ { position: 50 } ]
       }
+      @Semantics.businessDate.from: true
       DeliveryDate,
       @UI: {
       lineItem:       [ { position: 51, importance: #MEDIUM } ],
-      identification: [ { position: 51, label: 'Delivery Date' } ] }
+      identification: [ { position: 51, label: 'Delivery Time' } ] }
       DeliveryTime,
       @UI: {
       lineItem:       [ { position: 52, importance: #MEDIUM },
       {type: #FOR_ACTION, dataAction: 'setDropOffDate', label: 'Container dropped off'} ],
-      identification: [ { position: 52, label: 'Drop Off Date' } ] }
+      identification: [ { position: 52, label: 'Desired Drop Off Date' } ] }
+      @Semantics.businessDate.to: true
       DesiredDropOffDate,
       @UI: {
       lineItem:       [ { position: 53, importance: #MEDIUM } ],
-      identification: [ { position: 53, label: 'Drop Off Time' } ]}
+      identification: [ { position: 53, label: 'Desired Drop Off Time' } ]}
       DesiredDropOffTime,
       @UI: {
        lineItem:       [ { position: 54, importance: #MEDIUM }
-      //        , {type: #FOR_ACTION, dataAction: 'setDropOffDate', label: 'Container dropped off'}
+//              , {type: #FOR_ACTION, dataAction: 'setDropOffDate', label: 'Container dropped off'}
       ], identification: [ { position: 54, label: 'Drop Off Date' }
-      //     ,   {type: #FOR_ACTION, dataAction: 'setDropOffDate', label: 'Container dropped off'}
+//           ,   {type: #FOR_ACTION, dataAction: 'setDropOffDate', label: 'Container dropped off'}
       ]}
+      @Semantics.businessDate.to: true
       DropOffDate,
       @UI: {
       lineItem:       [ { position: 55, importance: #MEDIUM } ],
@@ -117,7 +120,8 @@ define root view entity ZC_ORDER_M
       DestStreet,
       @UI: {
       lineItem:       [ { position: 63, importance: #MEDIUM }],
-      identification: [ { position: 63, label: 'Destination Country Code' }]}
+      identification: [ { position: 63, label: 'Cntry' }]}
+      //      @UI.hidden: true
       DestCountryCode,
       @UI: {
       lineItem:       [ { position: 70, importance: #MEDIUM }
@@ -138,5 +142,5 @@ define root view entity ZC_ORDER_M
       @UI.hidden: true
       LastChangedBy,
       @UI.hidden: true
-      LastLocalChangedAt 
+      LastLocalChangedAt
 }
