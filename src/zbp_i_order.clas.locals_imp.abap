@@ -63,10 +63,7 @@ CLASS lhc_Order IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD setDropOffDate.
-*    Get Current Date
-    DATA: rv_date TYPE d.
-    GET TIME STAMP FIELD DATA(zv_tsl).
-    CONVERT TIME STAMP zv_tsl TIME ZONE 'utc' INTO DATE rv_date.
+    DATA(today) = sy-datlo.
 
 
 *   Set new Drop Off Date
@@ -76,7 +73,7 @@ CLASS lhc_Order IMPLEMENTATION.
             FIELDS (  DropOffDate )
             WITH VALUE #( FOR key IN keys
                             ( %tky          = key-%tky
-                              DropOffDate   =  rv_date ) )
+                              DropOffDate   =  today ) )
     FAILED failed
     REPORTED reported.
 

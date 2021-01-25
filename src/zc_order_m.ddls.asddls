@@ -95,7 +95,7 @@ define root view entity ZC_ORDER_M
        lineItem:       [ { position: 54, importance: #MEDIUM }
 //              , {type: #FOR_ACTION, dataAction: 'setDropOffDate', label: 'Container dropped off'}
       ], identification: [ { position: 54, label: 'Drop Off Date' }
-//           ,   {type: #FOR_ACTION, dataAction: 'setDropOffDate', label: 'Container dropped off'}
+           ,   {type: #FOR_ACTION, dataAction: 'setDropOffDate', label: 'Container dropped off'}
       ]}
       @Semantics.businessDate.to: true
       DropOffDate,
