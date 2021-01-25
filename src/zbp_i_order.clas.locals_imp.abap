@@ -2,12 +2,12 @@ CLASS lhc_Order DEFINITION INHERITING FROM cl_abap_behavior_handler.
   PRIVATE SECTION.
 
     CONSTANTS:
-     BEGIN OF order_status,
-          open TYPE c LENGTH 1 VALUE 'O', "Open
-          finished TYPE c LENGTH 1 Value 'X', "Finished
-     END OF order_status.
+      BEGIN OF order_status,
+        open     TYPE c LENGTH 1 VALUE 'O', "Open
+        finished TYPE c LENGTH 1 VALUE 'X', "Finished
+      END OF order_status.
 
- METHODS get_features FOR FEATURES
+    METHODS get_features FOR FEATURES
       IMPORTING keys REQUEST requested_features FOR Order RESULT result.
 
 *    METHODS get_instance_features FOR INSTANCE FEATURES
@@ -35,7 +35,7 @@ CLASS lhc_Order IMPLEMENTATION.
 *  METHOD get_instance_features.
 * ENDMETHOD.
 
- METHOD get_features.
+  METHOD get_features.
     " Read the travel status of the existing travels
     READ ENTITIES OF zi_order_m IN LOCAL MODE
       ENTITY Order
@@ -64,16 +64,17 @@ CLASS lhc_Order IMPLEMENTATION.
 
   METHOD setDropOffDate.
     DATA(today) = sy-datlo.
-
+    DATA(now) = sy-timlo.
 
 *   Set new Drop Off Date
     MODIFY ENTITIES OF zi_order_m IN LOCAL MODE
     ENTITY Order
         UPDATE
-            FIELDS (  DropOffDate )
+            FIELDS (  DropOffDate DropOffTime )
             WITH VALUE #( FOR key IN keys
                             ( %tky          = key-%tky
-                              DropOffDate   =  today ) )
+                              DropOffDate   =  today
+                              DropOffTime   = now ) )
     FAILED failed
     REPORTED reported.
 
@@ -114,7 +115,7 @@ CLASS lhc_Order IMPLEMENTATION.
 *  ENDMETHOD.
 
   METHOD calculateOrderID.
-   " check if OrderID is already filled
+    " check if OrderID is already filled
     READ ENTITIES OF zi_order_m IN LOCAL MODE
       ENTITY Order
         FIELDS ( OrderID ) WITH CORRESPONDING #( keys )
@@ -146,7 +147,7 @@ CLASS lhc_Order IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD setStatusFinished.
-   " Set the new overall status
+    " Set the new overall status
     MODIFY ENTITIES OF zi_order_m IN LOCAL MODE
       ENTITY Order
          UPDATE
