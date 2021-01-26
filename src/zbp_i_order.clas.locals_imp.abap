@@ -19,14 +19,22 @@ CLASS lhc_Order DEFINITION INHERITING FROM cl_abap_behavior_handler.
     METHODS setDropOffDate FOR MODIFY
       IMPORTING keys FOR ACTION Order~setDropOffDate RESULT result.
 
-*    METHODS setInitialStatus FOR DETERMINE ON MODIFY
-*      IMPORTING keys FOR Order~setInitialStatus.
+    METHODS setInitialStatus FOR DETERMINE ON MODIFY
+      IMPORTING keys FOR Order~setInitialStatus.
 
     METHODS calculateOrderID FOR DETERMINE ON SAVE
       IMPORTING keys FOR Order~calculateOrderID.
 
     METHODS setStatusFinished FOR MODIFY
       IMPORTING keys FOR ACTION Order~setStatusFinished RESULT result.
+    METHODS validateContainer FOR VALIDATE ON SAVE
+      IMPORTING keys FOR Order~validateContainer.
+
+    METHODS validateCustomer FOR VALIDATE ON SAVE
+      IMPORTING keys FOR Order~validateCustomer.
+
+    METHODS validateDates FOR VALIDATE ON SAVE
+      IMPORTING keys FOR Order~validateDates.
 
 ENDCLASS.
 
@@ -36,7 +44,7 @@ CLASS lhc_Order IMPLEMENTATION.
 * ENDMETHOD.
 
   METHOD get_features.
-    " Read the travel status of the existing travels
+    " Read the order status of the existing order
     READ ENTITIES OF zi_order_m IN LOCAL MODE
       ENTITY Order
         FIELDS ( Status ) WITH CORRESPONDING #( keys )
@@ -54,7 +62,7 @@ CLASS lhc_Order IMPLEMENTATION.
                                       ELSE if_abap_behv=>fc-o-enabled )
           IN
             ( %tky                 = order-%tky
-              %action-setStatusFinished = is_finished
+              %action-setDropOffDate = is_finished
              ) ).
   ENDMETHOD.
 
@@ -90,29 +98,29 @@ CLASS lhc_Order IMPLEMENTATION.
 *   TODO  call setStatusFinished.
   ENDMETHOD.
 
-*  METHOD setInitialStatus.
-*    " Read relevant travel instance data
-*    READ ENTITIES OF zi_order_m IN LOCAL MODE
-*      ENTITY Order
-*        FIELDS ( OrderStatus ) WITH CORRESPONDING #( keys )
-*      RESULT DATA(orders).
-*
-*    " Remove all travel instance data with defined status
-*    DELETE orders WHERE TravelStatus IS NOT INITIAL.
-*    CHECK orders IS NOT INITIAL.
-*
-*    " Set default travel status
-*    MODIFY ENTITIES OF zi_order_m IN LOCAL MODE
-*    ENTITY Order
-*      UPDATE
-*        FIELDS ( OrderStatus )
-*        WITH VALUE #( FOR travel IN travels
-*                      ( %tky         = travel-%tky
-*                        TravelStatus = travel_status-open ) )
-*    REPORTED DATA(update_reported).
-*
-*    reported = CORRESPONDING #( DEEP update_reported ).
-*  ENDMETHOD.
+  METHOD setInitialStatus.
+    " Read relevant order instance data
+    READ ENTITIES OF zi_order_m IN LOCAL MODE
+      ENTITY Order
+        FIELDS ( status ) WITH CORRESPONDING #( keys )
+      RESULT DATA(orders).
+
+    " Remove all order instance data with defined status
+    DELETE orders WHERE status IS NOT INITIAL.
+    CHECK orders IS NOT INITIAL.
+
+    " Set default order status
+    MODIFY ENTITIES OF zi_order_m IN LOCAL MODE
+    ENTITY Order
+      UPDATE
+        FIELDS ( Status )
+        WITH VALUE #( FOR order IN orders
+                      ( %tky         = order-%tky
+                        status = order_status-open ) )
+    REPORTED DATA(update_reported).
+
+    reported = CORRESPONDING #( DEEP update_reported ).
+  ENDMETHOD.
 
   METHOD calculateOrderID.
     " check if OrderID is already filled
@@ -168,4 +176,129 @@ CLASS lhc_Order IMPLEMENTATION.
                         ( %tky   = order-%tky
                           %param = order ) ).
   ENDMETHOD.
+  METHOD validateContainer.
+  " Read relevant order instance data
+    READ ENTITIES OF zi_order_m IN LOCAL MODE
+      ENTITY Order
+        FIELDS ( ContainerID ) WITH CORRESPONDING #( keys )
+      RESULT DATA(orders).
+
+    DATA containers TYPE SORTED TABLE OF zat_container WITH UNIQUE KEY container_id.
+
+    " Optimization of DB select: extract distinct non-initial agency IDs
+    containers = CORRESPONDING #( orders DISCARDING DUPLICATES MAPPING container_id = ContainerID EXCEPT * ).
+    DELETE containers WHERE container_id IS INITIAL.
+
+    IF containers IS NOT INITIAL.
+      " Check if agency ID exist
+      SELECT FROM zat_container FIELDS container_id
+        FOR ALL ENTRIES IN @containers
+        WHERE container_id = @containers-container_id
+        INTO TABLE @DATA(containers_db).
+    ENDIF.
+
+    " Raise msg for non existing and initial ContainerID
+    LOOP AT orders INTO DATA(order).
+      " Clear state messages that might exist
+      APPEND VALUE #(  %tky               = order-%tky
+                       %state_area        = 'VALIDATE_AGENCY' )
+        TO reported-order.
+
+      IF order-ContainerID IS INITIAL OR NOT line_exists( containers_db[ container_id = order-ContainerID ] ).
+        APPEND VALUE #( %tky = order-%tky ) TO failed-order.
+
+        APPEND VALUE #( %tky        = order-%tky
+                        %state_area = 'VALIDATE_AGENCY'
+                        %msg        = NEW zcl_msg_exception_order(
+                                          severity = if_abap_behv_message=>severity-error
+                                          textid   = zcl_msg_exception_order=>agency_unknown
+                                          containerid = order-ContainerID )
+                        %element-ContainerID = if_abap_behv=>mk-on )
+          TO reported-order.
+      ENDIF.
+    ENDLOOP.
+  ENDMETHOD.
+
+  METHOD validateCustomer.
+   " Read relevant order instance data
+    READ ENTITIES OF zi_order_m IN LOCAL MODE
+      ENTITY Order
+        FIELDS ( CustomerID ) WITH CORRESPONDING #( keys )
+      RESULT DATA(orders).
+
+    DATA customers TYPE SORTED TABLE OF zat_customer WITH UNIQUE KEY customer_id.
+
+    " Optimization of DB select: extract distinct non-initial customer IDs
+    customers = CORRESPONDING #( orders DISCARDING DUPLICATES MAPPING customer_id = CustomerID EXCEPT * ).
+    DELETE customers WHERE customer_id IS INITIAL.
+    IF customers IS NOT INITIAL.
+      " Check if customer ID exist
+      SELECT FROM zat_customer FIELDS customer_id
+        FOR ALL ENTRIES IN @customers
+        WHERE customer_id = @customers-customer_id
+        INTO TABLE @DATA(customers_db).
+    ENDIF.
+
+    " Raise msg for non existing and initial customerID
+    LOOP AT orders INTO DATA(order).
+      " Clear state messages that might exist
+      APPEND VALUE #(  %tky        = order-%tky
+                       %state_area = 'VALIDATE_CUSTOMER' )
+        TO reported-order.
+
+      IF order-CustomerID IS INITIAL OR NOT line_exists( customers_db[ customer_id = order-CustomerID ] ).
+        APPEND VALUE #(  %tky = order-%tky ) TO failed-order.
+
+        APPEND VALUE #(  %tky        = order-%tky
+                         %state_area = 'VALIDATE_CUSTOMER'
+                         %msg        = NEW zcl_msg_exception_order(
+                                           severity   = if_abap_behv_message=>severity-error
+                                           textid     = zcl_msg_exception_order=>customer_unknown
+                                           customerid = order-CustomerID )
+                         %element-CustomerID = if_abap_behv=>mk-on )
+          TO reported-order.
+      ENDIF.
+    ENDLOOP.
+
+  ENDMETHOD.
+
+  METHOD validateDates.
+   READ ENTITIES OF zi_order_m IN LOCAL MODE
+      ENTITY Order
+        FIELDS ( OrderID DeliveryDate DropOffDate ) WITH CORRESPONDING #( keys )
+      RESULT DATA(orders).
+
+    LOOP AT orders INTO DATA(order).
+      " Clear state messages that might exist
+      APPEND VALUE #(  %tky        = order-%tky
+                       %state_area = 'VALIDATE_DATES' )
+        TO reported-order.
+
+      IF order-DropOffDate < order-DeliveryDate.
+        APPEND VALUE #( %tky = order-%tky ) TO failed-order.
+        APPEND VALUE #( %tky               = order-%tky
+                        %state_area        = 'VALIDATE_DATES'
+                        %msg               = NEW zcl_msg_exception_order(
+                                                 severity  = if_abap_behv_message=>severity-error
+                                                 textid    = zcl_msg_exception_order=>date_interval
+                                                 deliverydate = order-DeliveryDate
+                                                 dropoffdate   = order-DropOffDate
+                                                 orderid  = order-OrderID )
+                        %element-DeliveryDate = if_abap_behv=>mk-on
+                        %element-DropOffDate   = if_abap_behv=>mk-on ) TO reported-order.
+
+      ELSEIF order-DeliveryDate < cl_abap_context_info=>get_system_date( ).
+        APPEND VALUE #( %tky               = order-%tky ) TO failed-order.
+        APPEND VALUE #( %tky               = order-%tky
+                        %state_area        = 'VALIDATE_DATES'
+                        %msg               = NEW zcl_msg_exception_order(
+                                                 severity  = if_abap_behv_message=>severity-error
+                                                 textid    = zcl_msg_exception_order=>begin_date_before_system_date
+*                                                 delivery_date_before_system_date
+                                                 deliverydate = order-deliverydate )
+                        %element-DeliveryDate = if_abap_behv=>mk-on ) TO reported-order.
+      ENDIF.
+    ENDLOOP.
+  ENDMETHOD.
+
 ENDCLASS.

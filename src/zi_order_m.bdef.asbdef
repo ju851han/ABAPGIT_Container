@@ -24,10 +24,23 @@ etag master LastLocalChangedAt
   action ( features : instance ) setStatusFinished result [1] $self;
   internal action recalcTotalPrice;
 
-  //Determination (handle side effects of modified enities instances
-//  determination setInitialStatus on modify { create; }
+  // Determination (handle side effects of modified enities instances)
+  determination setInitialStatus on modify { create; }
   //  determination calculateTotalPrice on modify { field ... ,...}
   determination calculateOrderID on save { create; }
+
+  // Validation at Creating
+  validation validateContainer on save { field ContainerID; create; }
+  validation validateCustomer on save { field CustomerID; create; }
+  validation validateDates on save { field DeliveryDate, DropOffDate; create; }
+
+  // Validation for Draft
+  draft determine action Prepare
+  {
+    validation validateContainer;
+    validation validateCustomer;
+    validation validateDates;
+  }
 
   // Mapping between zat_order and zdt_order
   mapping for zat_order
