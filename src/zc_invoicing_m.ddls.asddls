@@ -67,10 +67,12 @@ define view ZC_INVOICING_M
       @UI: {
       lineItem:       [ { position: 33, importance: #MEDIUM }],
       identification: [ { position: 33, label: 'Demurrage Costs' } ] }
+      @Semantics.durationInDays: true
       dats_days_between(DeliveryDate, DropOffDate) * 20                                         as DemurrageCosts,
       @UI: {
       lineItem:       [ { position: 40, importance: #MEDIUM }],
       identification: [ { position: 40, label: 'Destination City' } ] }
+      @Semantics.address.city: true
       DestCity,
       @UI: {
       lineItem:       [ { position: 41, importance: #MEDIUM }],

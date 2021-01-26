@@ -5,7 +5,7 @@
 headerInfo: {typeName:'Customer',
              typeNamePlural:'Customers',
              title: { type: #STANDARD, value: 'CustomerID'}},
-   // Sort by CustomerID (Lowest CustomerID is on first row)          
+   // Sort by CustomerID (Lowest CustomerID is on first row)
              presentationVariant: [{ sortOrder: [{ by: 'CustomerID', direction: #ASC }], visualizations: [{type: #AS_LINEITEM }] }]
              }
 
@@ -31,18 +31,24 @@ define root view entity ZC_CUSTOMER_M
       @UI: {
       lineItem:       [ { position: 20, importance: #MEDIUM } ],
       identification: [ { position: 20, label: 'First Name' } ] }
+      @Semantics.text: true
       FirstName,
       @UI: {
       lineItem:       [ { position: 30, importance: #MEDIUM } ],
       identification: [ { position: 30, label: 'Last Name' } ] }
+      @Semantics.text: true
       LastName,
       @UI: {
       lineItem:       [ { position: 40, importance: #MEDIUM } ],
       identification: [ { position: 40, label: 'Company Name' } ] }
+      @Semantics.text: true
+      @Semantics.organization.name: true
       CompanyName,
       @UI: {
       lineItem:       [ { position: 50, importance: #MEDIUM } ],
       identification: [ { position: 50, label: 'City' } ] }
+      @Semantics.address.city: true
+      @Semantics.text: true
       City,
       @UI: {
       lineItem:       [ { position: 60, importance: #MEDIUM } ],
@@ -51,10 +57,13 @@ define root view entity ZC_CUSTOMER_M
       @UI: {
       lineItem:       [ { position: 70, importance: #MEDIUM } ],
       identification: [ { position: 70, label: 'Street' } ] }
+      @Semantics.address.street: true
+      @Semantics.text: true
       Street,
       @UI: {
       lineItem:       [ { position: 80, importance: #MEDIUM } ],
       identification: [ { position: 80, label: 'Country Code' } ] }
+      @Semantics.text: true
       CountryCode,
       // Admin data
       @UI.hidden: true

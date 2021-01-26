@@ -52,6 +52,7 @@ define root view entity ZC_ORDER_M
           lineItem:       [ { position: 20, importance: #MEDIUM } ],
           identification: [ { position: 20 } ],
           selectionField: [ { position: 20 } ] }
+      @Semantics.text: true
       Category,
       //            @UI: {
       //          lineItem:       [ { position: 30, importance: #MEDIUM } ],
@@ -93,7 +94,7 @@ define root view entity ZC_ORDER_M
       DesiredDropOffTime,
       @UI: {
        lineItem:       [ { position: 54, importance: #MEDIUM }
-//              , {type: #FOR_ACTION, dataAction: 'setDropOffDate', label: 'Container dropped off'}
+      //              , {type: #FOR_ACTION, dataAction: 'setDropOffDate', label: 'Container dropped off'}
       ], identification: [ { position: 54, label: 'Drop Off Date' }
            ,   {type: #FOR_ACTION, dataAction: 'setDropOffDate', label: 'Container dropped off'}
       ]}
@@ -143,4 +144,6 @@ define root view entity ZC_ORDER_M
       LastChangedBy,
       @UI.hidden: true
       LastLocalChangedAt
+
+
 }
