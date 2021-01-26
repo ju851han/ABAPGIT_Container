@@ -102,11 +102,11 @@ CLASS lhc_Order IMPLEMENTATION.
     " Read relevant order instance data
     READ ENTITIES OF zi_order_m IN LOCAL MODE
       ENTITY Order
-        FIELDS ( status ) WITH CORRESPONDING #( keys )
+        FIELDS ( Status ) WITH CORRESPONDING #( keys )
       RESULT DATA(orders).
 
     " Remove all order instance data with defined status
-    DELETE orders WHERE status IS NOT INITIAL.
+    DELETE orders WHERE Status IS NOT INITIAL.
     CHECK orders IS NOT INITIAL.
 
     " Set default order status
@@ -116,7 +116,7 @@ CLASS lhc_Order IMPLEMENTATION.
         FIELDS ( Status )
         WITH VALUE #( FOR order IN orders
                       ( %tky         = order-%tky
-                        status = order_status-open ) )
+                        Status = order_status-open ) )
     REPORTED DATA(update_reported).
 
     reported = CORRESPONDING #( DEEP update_reported ).
