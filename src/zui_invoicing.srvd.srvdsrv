@@ -1,0 +1,4 @@
+@EndUserText.label: 'Service Definition for Invoicing'
+define service ZUI_Invoicing {
+  expose ZC_INVOICING_M;
+}
