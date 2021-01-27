@@ -55,18 +55,19 @@ define root view entity ZC_ORDER_M
           selectionField: [ { position: 20 } ] }
       @Semantics.text: true
       Category,
-      //            @UI: {
-      //          lineItem:       [ { position: 30, importance: #MEDIUM } ],
-      //          identification: [ { position: 30 } ],
-      //          selectionField: [ { position: 30 } ] }
-      //      @Semantics.amount.currencyCode: 'CurrencyCode'
-      //      PricePerT,
+      @UI: {
+      lineItem:       [ { position: 30, importance: #MEDIUM } ],
+      identification: [ { position: 30 } ],
+      selectionField: [ { position: 30 } ] }
+      @Semantics.amount.currencyCode: 'CurrencyCode'
+      PricePerT,
+          CurrencyCode,
       //      @UI: {
       //      lineItem:       [ { position: 30, importance: #MEDIUM } ],
       //      identification: [ { position: 30, label: 'Total Price' } ] }
       //      @Semantics.amount.currencyCode: 'CurrencyCode'
       //      TotalPrice,
-      CurrencyCode,
+  
       @UI: {
       lineItem:       [ { position: 40, importance: #LOW } ],
       identification: [ { position: 40, label: 'Remarks' } ] }
@@ -101,10 +102,10 @@ define root view entity ZC_ORDER_M
       ]}
       @Semantics.businessDate.to: true
       DropOffDate,
-      @UI: {
-      lineItem:       [ { position: 55, importance: #MEDIUM } ],
-      identification: [ { position: 55, label: 'Drop Off Time' } ]}
-      DropOffTime,
+      //      @UI: {
+      //      lineItem:       [ { position: 55, importance: #MEDIUM } ],
+      //      identification: [ { position: 55, label: 'Drop Off Time' } ]}
+      //      DropOffTime,
       @UI: {
       lineItem:       [ { position: 60, importance: #HIGH }],
       identification: [ { position: 60, label: 'Destination City' }]}

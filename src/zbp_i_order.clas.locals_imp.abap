@@ -13,9 +13,6 @@ CLASS lhc_Order DEFINITION INHERITING FROM cl_abap_behavior_handler.
 *    METHODS get_instance_features FOR INSTANCE FEATURES
 *      IMPORTING keys REQUEST requested_features FOR Order RESULT result.
 
-    METHODS recalcTotalPrice FOR MODIFY
-      IMPORTING keys FOR ACTION Order~recalcTotalPrice.
-
     METHODS setDropOffDate FOR MODIFY
       IMPORTING keys FOR ACTION Order~setDropOffDate RESULT result.
 
@@ -27,6 +24,10 @@ CLASS lhc_Order DEFINITION INHERITING FROM cl_abap_behavior_handler.
 
     METHODS setStatusFinished FOR MODIFY
       IMPORTING keys FOR ACTION Order~setStatusFinished RESULT result.
+
+    METHODS recalcPricePerT FOR MODIFY
+      IMPORTING keys FOR ACTION order~recalcPricePerT.
+
     METHODS validateContainer FOR VALIDATE ON SAVE
       IMPORTING keys FOR Order~validateContainer.
 
@@ -35,6 +36,9 @@ CLASS lhc_Order DEFINITION INHERITING FROM cl_abap_behavior_handler.
 
     METHODS validateDates FOR VALIDATE ON SAVE
       IMPORTING keys FOR Order~validateDates.
+    METHODS calculatePricePerT FOR DETERMINE ON MODIFY
+      IMPORTING keys FOR Order~calculatePricePerT.
+
 
 ENDCLASS.
 
@@ -67,8 +71,6 @@ CLASS lhc_Order IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD recalcTotalPrice.
-  ENDMETHOD.
 
   METHOD setDropOffDate.
     DATA(today) = sy-datlo.
@@ -177,7 +179,7 @@ CLASS lhc_Order IMPLEMENTATION.
                           %param = order ) ).
   ENDMETHOD.
   METHOD validateContainer.
-  " Read relevant order instance data
+    " Read relevant order instance data
     READ ENTITIES OF zi_order_m IN LOCAL MODE
       ENTITY Order
         FIELDS ( ContainerID ) WITH CORRESPONDING #( keys )
@@ -220,7 +222,7 @@ CLASS lhc_Order IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD validateCustomer.
-   " Read relevant order instance data
+    " Read relevant order instance data
     READ ENTITIES OF zi_order_m IN LOCAL MODE
       ENTITY Order
         FIELDS ( CustomerID ) WITH CORRESPONDING #( keys )
@@ -263,10 +265,10 @@ CLASS lhc_Order IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD validateDates.
-   READ ENTITIES OF zi_order_m IN LOCAL MODE
-      ENTITY Order
-        FIELDS ( OrderID DeliveryDate DesiredDropOffDate ) WITH CORRESPONDING #( keys )
-      RESULT DATA(orders).
+    READ ENTITIES OF zi_order_m IN LOCAL MODE
+       ENTITY Order
+         FIELDS ( OrderID DeliveryDate DesiredDropOffDate ) WITH CORRESPONDING #( keys )
+       RESULT DATA(orders).
 
     LOOP AT orders INTO DATA(order).
       " Clear state messages that might exist
@@ -299,6 +301,78 @@ CLASS lhc_Order IMPLEMENTATION.
                         %element-DeliveryDate = if_abap_behv=>mk-on ) TO reported-order.
       ENDIF.
     ENDLOOP.
+  ENDMETHOD.
+
+  METHOD recalcPricePerT.
+
+    TYPES: BEGIN OF ty_catprice,
+             category TYPE c LENGTH 28,
+             price    TYPE decfloat34,
+           END OF ty_catprice.
+
+    DATA: catprice TYPE STANDARD TABLE OF ty_catprice.
+
+    " Read all relevant order instances.
+    READ ENTITIES OF zi_order_m IN LOCAL MODE
+         ENTITY Order
+            FIELDS ( Category CurrencyCode )
+            WITH CORRESPONDING #( keys )
+         RESULT DATA(orders).
+
+
+
+    LOOP AT orders ASSIGNING FIELD-SYMBOL(<order>).
+      " Set the start for the calculation
+      catprice = VALUE #( ( category  = <order>-Category
+                             price = <order>-PricePerT ) ).
+
+      " Read all associated categories and add them to the total price.
+      READ ENTITIES OF ZI_Order_M IN LOCAL MODE
+        ENTITY Order
+          FIELDS (  Category )
+        WITH VALUE #( ( %tky = <order>-%tky ) )
+       RESULT DATA(categories).
+
+
+      CLEAR <order>-PricePerT.
+
+      LOOP AT catprice INTO DATA(single_catprice).
+        CASE single_catprice-category.
+          WHEN 'EARTH&SOIL'.
+            <order>-PricePerT = 2.
+          WHEN 'CW_MINERAL'.
+            <order>-PricePerT = 3.
+          WHEN 'CW_MIXED' .
+            <order>-PricePerT = 4.
+          WHEN 'CW_PLASTIC'.
+            <order>-PricePerT = 5.
+          WHEN 'METAL&SCRA' .
+            <order>-PricePerT = 6.
+          WHEN 'WOOD' .
+            <order>-PricePerT =  7.
+          WHEN OTHERS.
+            <order>-PricePerT = 1.
+        ENDCASE.
+
+      ENDLOOP.
+    ENDLOOP.
+    " write back the modified total_price of orders
+    MODIFY ENTITIES OF ZI_Order_M IN LOCAL MODE
+      ENTITY order
+        UPDATE FIELDS ( PricePerT )
+        WITH CORRESPONDING #( orders ).
+
+  ENDMETHOD.
+
+  METHOD calculatePricePerT.
+
+    MODIFY ENTITIES OF zi_order_m IN LOCAL MODE
+      ENTITY order
+        EXECUTE recalcPricePerT
+        FROM CORRESPONDING #( keys )
+      REPORTED DATA(execute_reported).
+
+    reported = CORRESPONDING #( DEEP execute_reported ).
   ENDMETHOD.
 
 ENDCLASS.
