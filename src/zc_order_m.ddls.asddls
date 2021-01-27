@@ -37,6 +37,7 @@ define root view entity ZC_ORDER_M
           selectionField: [ { position: 11 } ] }
       @Consumption.valueHelpDefinition: [{entity: {name: 'ZI_Customer_M', element: 'CustomerID'} }]
       @ObjectModel.text.element: ['CustomerName']
+
       @Search.defaultSearchElement: true
       CustomerID,
       @Semantics.text: true
@@ -49,7 +50,7 @@ define root view entity ZC_ORDER_M
       @Search.defaultSearchElement: true
       ContainerID,
       @UI: {
-          lineItem:       [ { position: 20, importance: #MEDIUM } ],
+          lineItem:       [ { position: 20, importance: #HIGH } ],
           identification: [ { position: 20 } ],
           selectionField: [ { position: 20 } ] }
       @Semantics.text: true
@@ -67,29 +68,29 @@ define root view entity ZC_ORDER_M
       //      TotalPrice,
       CurrencyCode,
       @UI: {
-      lineItem:       [ { position: 40, importance: #MEDIUM } ],
+      lineItem:       [ { position: 40, importance: #LOW } ],
       identification: [ { position: 40, label: 'Remarks' } ] }
       @Semantics.text: true
       Remarks,
       @UI: {
-      lineItem:       [ { position: 50, importance: #MEDIUM } ],
+      lineItem:       [ { position: 50, importance: #HIGH } ],
       identification: [ { position: 50, label: 'Delivery Date' } ]//,
       //selectionField: [ { position: 50 } ]
       }
       @Semantics.businessDate.from: true
       DeliveryDate,
       @UI: {
-      lineItem:       [ { position: 51, importance: #MEDIUM } ],
+      lineItem:       [ { position: 51, importance: #LOW } ],
       identification: [ { position: 51, label: 'Delivery Time' } ] }
       DeliveryTime,
       @UI: {
-      lineItem:       [ { position: 52, importance: #MEDIUM },
+      lineItem:       [ { position: 52, importance: #HIGH },
       {type: #FOR_ACTION, dataAction: 'setDropOffDate', label: 'Container dropped off'} ],
       identification: [ { position: 52, label: 'Desired Drop Off Date' } ] }
       @Semantics.businessDate.to: true
       DesiredDropOffDate,
       @UI: {
-      lineItem:       [ { position: 53, importance: #MEDIUM } ],
+      lineItem:       [ { position: 53, importance: #LOW } ],
       identification: [ { position: 53, label: 'Desired Drop Off Time' } ]}
       DesiredDropOffTime,
       @UI: {
@@ -105,27 +106,27 @@ define root view entity ZC_ORDER_M
       identification: [ { position: 55, label: 'Drop Off Time' } ]}
       DropOffTime,
       @UI: {
-      lineItem:       [ { position: 60, importance: #MEDIUM }],
+      lineItem:       [ { position: 60, importance: #HIGH }],
       identification: [ { position: 60, label: 'Destination City' }]}
       @Semantics.address.city: true
       DestCity,
       @UI: {
-      lineItem:       [ { position: 61, importance: #MEDIUM }],
+      lineItem:       [ { position: 61, importance: #HIGH }],
       identification: [ { position: 61, label: 'Destination PLZ' }]}
       @Semantics.address.postBox: true
       DestPostalCode,
       @UI: {
-      lineItem:       [ { position: 62, importance: #MEDIUM }],
+      lineItem:       [ { position: 62, importance: #HIGH }],
       identification: [ { position: 62, label: 'Destination Street' }]}
       @Semantics.address.street: true
       DestStreet,
       @UI: {
-      lineItem:       [ { position: 63, importance: #MEDIUM }],
+      lineItem:       [ { position: 63, importance: #HIGH }],
       identification: [ { position: 63, label: 'Cntry' }]}
       //      @UI.hidden: true
       DestCountryCode,
       @UI: {
-      lineItem:       [ { position: 70, importance: #MEDIUM }
+      lineItem:       [ { position: 70, importance: #HIGH }
         , {type: #FOR_ACTION, dataAction: 'setStatusFinished', label: 'Order finished'}
       ],
       identification: [ { position: 70, label: 'Status' }

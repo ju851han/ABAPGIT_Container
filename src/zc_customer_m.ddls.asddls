@@ -34,7 +34,7 @@ define root view entity ZC_CUSTOMER_M
       @Semantics.text: true
       FirstName,
       @UI: {
-      lineItem:       [ { position: 30, importance: #MEDIUM } ],
+      lineItem:       [ { position: 30, importance: #HIGH } ],
       identification: [ { position: 30, label: 'Last Name' } ] }
       @Semantics.text: true
       LastName,
@@ -45,23 +45,23 @@ define root view entity ZC_CUSTOMER_M
       @Semantics.organization.name: true
       CompanyName,
       @UI: {
-      lineItem:       [ { position: 50, importance: #MEDIUM } ],
+      lineItem:       [ { position: 50, importance: #HIGH } ],
       identification: [ { position: 50, label: 'City' } ] }
       @Semantics.address.city: true
       @Semantics.text: true
       City,
       @UI: {
-      lineItem:       [ { position: 60, importance: #MEDIUM } ],
+      lineItem:       [ { position: 60, importance: #HIGH } ],
       identification: [ { position: 60, label: 'Postal Code' } ] }
       PostalCode,
       @UI: {
-      lineItem:       [ { position: 70, importance: #MEDIUM } ],
+      lineItem:       [ { position: 70, importance: #HIGH } ],
       identification: [ { position: 70, label: 'Street' } ] }
       @Semantics.address.street: true
       @Semantics.text: true
       Street,
       @UI: {
-      lineItem:       [ { position: 80, importance: #MEDIUM } ],
+      lineItem:       [ { position: 80, importance: #HIGH } ],
       identification: [ { position: 80, label: 'Country Code' } ] }
       @Semantics.text: true
       CountryCode,
