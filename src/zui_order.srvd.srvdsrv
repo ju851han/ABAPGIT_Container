@@ -1,4 +1,6 @@
 @EndUserText.label: 'Service Definition for Order'
 define service ZUI_ORDER {
   expose ZC_ORDER_M as Order_Container;
+  expose ZI_Container as Container;
+  expose ZI_CUSTOMER_M as Customer;
 }

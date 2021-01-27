@@ -1,7 +1,8 @@
 projection;
 use draft;
 
-define behavior for ZC_ORDER_M //alias <alias_name>
+define behavior for ZC_ORDER_M alias Order
+use etag
 {
   use create;
   use update;

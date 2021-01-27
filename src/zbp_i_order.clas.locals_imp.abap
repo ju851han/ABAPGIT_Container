@@ -265,7 +265,7 @@ CLASS lhc_Order IMPLEMENTATION.
   METHOD validateDates.
    READ ENTITIES OF zi_order_m IN LOCAL MODE
       ENTITY Order
-        FIELDS ( OrderID DeliveryDate DropOffDate ) WITH CORRESPONDING #( keys )
+        FIELDS ( OrderID DeliveryDate DesiredDropOffDate ) WITH CORRESPONDING #( keys )
       RESULT DATA(orders).
 
     LOOP AT orders INTO DATA(order).
@@ -274,7 +274,7 @@ CLASS lhc_Order IMPLEMENTATION.
                        %state_area = 'VALIDATE_DATES' )
         TO reported-order.
 
-      IF order-DropOffDate < order-DeliveryDate.
+      IF order-DesiredDropOffDate <= order-DeliveryDate.
         APPEND VALUE #( %tky = order-%tky ) TO failed-order.
         APPEND VALUE #( %tky               = order-%tky
                         %state_area        = 'VALIDATE_DATES'
@@ -282,10 +282,10 @@ CLASS lhc_Order IMPLEMENTATION.
                                                  severity  = if_abap_behv_message=>severity-error
                                                  textid    = zcl_msg_exception_order=>date_interval
                                                  deliverydate = order-DeliveryDate
-                                                 dropoffdate   = order-DropOffDate
+                                                 desireddropoffdate   = order-DesiredDropOffDate
                                                  orderid  = order-OrderID )
                         %element-DeliveryDate = if_abap_behv=>mk-on
-                        %element-DropOffDate   = if_abap_behv=>mk-on ) TO reported-order.
+                        %element-DesiredDropOffDate   = if_abap_behv=>mk-on ) TO reported-order.
 
       ELSEIF order-DeliveryDate < cl_abap_context_info=>get_system_date( ).
         APPEND VALUE #( %tky               = order-%tky ) TO failed-order.

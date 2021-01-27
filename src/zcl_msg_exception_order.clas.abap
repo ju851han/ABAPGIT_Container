@@ -15,7 +15,7 @@ CLASS zcl_msg_exception_order DEFINITION
         msgid TYPE symsgid VALUE 'ZCL_MSG_ORDER',
         msgno TYPE symsgno VALUE '001',
         attr1 TYPE scx_attrname VALUE 'DELIVERYDATE',
-        attr2 TYPE scx_attrname VALUE 'DROPOFFDATE',
+        attr2 TYPE scx_attrname VALUE 'DESIREDDROPOFFDATE',
         attr3 TYPE scx_attrname VALUE 'ORDERID',
         attr4 TYPE scx_attrname VALUE '',
       END OF date_interval .
@@ -53,14 +53,14 @@ CLASS zcl_msg_exception_order DEFINITION
         textid     LIKE if_t100_message=>t100key OPTIONAL
         previous   TYPE REF TO cx_root OPTIONAL
         deliverydate  TYPE d OPTIONAL
-        dropoffdate    TYPE d OPTIONAL
+        desireddropoffdate    TYPE d OPTIONAL
         orderid   TYPE int1 OPTIONAL
         customerid TYPE int1 OPTIONAL
         containerid   TYPE int1  OPTIONAL
       .
 
     DATA deliverydate TYPE d READ-ONLY.
-    DATA dropoffdate TYPE d READ-ONLY.
+    DATA desireddropoffdate TYPE d READ-ONLY.
     DATA orderid TYPE string READ-ONLY.
     DATA customerid TYPE string READ-ONLY.
     DATA containerid TYPE string READ-ONLY.
@@ -87,7 +87,7 @@ CLASS zcl_msg_exception_order IMPLEMENTATION.
     me->if_abap_behv_message~m_severity = severity.
 
     me->deliverydate = deliverydate.
-    me->dropoffdate = dropoffdate.
+    me->desireddropoffdate = desireddropoffdate.
     me->orderid = orderid.
 *    |{ orderid ALPHA = OUT }|.
     me->customerid = customerid.

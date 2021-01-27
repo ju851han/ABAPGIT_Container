@@ -15,7 +15,7 @@ etag master LastLocalChangedAt
 
   //Access rights for the fields
   field ( numbering : managed, readonly ) OrderUUID;
-  field ( readonly ) OrderID, PricePerT, TotalPrice, Status;
+  field ( readonly ) OrderID, PricePerT, TotalPrice, Status; //TODO TotalPrice löschen, Readonly zusätzlich : DropOffDate, DropOffTime
   field ( readonly ) CreatedAt, CreatedBy, LastChangedAt, LastChangedBy, LastLocalChangedAt;
   field ( mandatory ) CustomerID, ContainerID, Category;
 
@@ -32,7 +32,7 @@ etag master LastLocalChangedAt
   // Validation at Creating
   validation validateContainer on save { field ContainerID; create; }
   validation validateCustomer on save { field CustomerID; create; }
-  validation validateDates on save { field DeliveryDate, DropOffDate; create; }
+  validation validateDates on save { field DeliveryDate, DesiredDropOffDate; create; }
 
   // Validation for Draft
   draft determine action Prepare
