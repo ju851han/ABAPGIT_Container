@@ -55,8 +55,8 @@ created_by = 'ADMIN' last_changed_at = zv_tsl last_changed_by = 'ADMIN' last_loc
        ).
 
       CATCH cx_uuid_error INTO DATA(e_text).
-* TODO    MESSAGE e_text->get_text TYPE 'I'.
-
+        out->write( 'Insert  failed' ).
+        out->write( e_text ).
     ENDTRY.
 
 *   Delete the possible entries in the database table - in case it was already filled

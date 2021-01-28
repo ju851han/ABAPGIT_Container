@@ -11,7 +11,6 @@ presentationVariant: [{ sortOrder: [{ by: 'DeliveryDate', direction: #DESC }], v
 
 
 @Search.searchable: true
-// @Metadata.allowExtensions: true
 
 @ObjectModel.semanticKey: ['OrderID']
 
@@ -57,17 +56,10 @@ define root view entity ZC_ORDER_M
       Category,
       @UI: {
       lineItem:       [ { position: 30, importance: #MEDIUM } ],
-      identification: [ { position: 30 } ],
-      selectionField: [ { position: 30 } ] }
+      identification: [ { position: 30 } ]}
       @Semantics.amount.currencyCode: 'CurrencyCode'
       PricePerT,
       CurrencyCode,
-      //      @UI: {
-      //      lineItem:       [ { position: 30, importance: #MEDIUM } ],
-      //      identification: [ { position: 30, label: 'Total Price' } ] }
-      //      @Semantics.amount.currencyCode: 'CurrencyCode'
-      //      TotalPrice,
-
       @UI: {
       lineItem:       [ { position: 40, importance: #LOW } ],
       identification: [ { position: 40, label: 'Remarks' } ] }

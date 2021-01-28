@@ -37,14 +37,7 @@ define view ZC_INVOICING_M
          lineItem:       [ { position: 22, importance: #HIGH } ],
          identification: [ { position: 22, label: 'CatPrice' } ] }
       @Semantics.amount.currencyCode: 'CurrencyCode'
-      case Category
-      when 'EARTH&SOIL' then 2
-      when 'CW_MINERAL' then 3
-      when 'CW_MIXED' then  4
-      when 'CW_PLASTIC' then 5
-      when 'METAL&SCRA' then 6
-      when 'WOOD' then 7
-      else 0 end                                                                                as PricePerT,
+      PricePerT,
       @UI: {
       lineItem:       [ { position: 23, importance: #HIGH } ],
       identification: [ { position: 23, label: 'CatPrice' } ] }
@@ -68,6 +61,7 @@ define view ZC_INVOICING_M
       lineItem:       [ { position: 33, importance: #MEDIUM }],
       identification: [ { position: 33, label: 'Demurrage Costs' } ] }
       @Semantics.durationInDays: true
+       @Semantics.amount.currencyCode: 'CurrencyCode'
       dats_days_between(DeliveryDate, DropOffDate) * 20                                         as DemurrageCosts,
       @UI: {
       lineItem:       [ { position: 40, importance: #MEDIUM }],
@@ -77,15 +71,19 @@ define view ZC_INVOICING_M
       @UI: {
       lineItem:       [ { position: 41, importance: #MEDIUM }],
       identification: [ { position: 41, label: 'Transport Costs' } ] }
-      @Semantics.amount.currencyCode: 'CurrencyCode'
+      @Semantics.amount.currencyCode: 'CurrencyCode'     
       case DestCountryCode
           when 'DE' then 0
-          else 100 end                                                                          as TransportCosts,
+          else 100 end                                                                          as Transportcosts,
+          
       @UI: {
             lineItem:       [ { position: 42, importance: #MEDIUM }],
             identification: [ { position: 42, label: 'Total Price' } ] }
       @Semantics.amount.currencyCode: 'CurrencyCode'
-      _Container.max_payload * PricePerT   +  dats_days_between(DeliveryDate, DropOffDate) * 20 as TotalPrice,
+      case DestCountryCode
+      when 'DE' then
+      _Container.max_payload * PricePerT   +  dats_days_between(DeliveryDate, DropOffDate) * 20 + 0
+      else _Container.max_payload * PricePerT   +  dats_days_between(DeliveryDate, DropOffDate) * 20 + 100 end as TotalPrice,
 
       @UI: {
       lineItem:       [ { position: 50, importance: #LOW }],
