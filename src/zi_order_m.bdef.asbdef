@@ -17,16 +17,17 @@ etag master LastLocalChangedAt
   field ( numbering : managed, readonly ) OrderUUID;
   field ( readonly ) OrderID, PricePerT, TotalPrice, Status, DropOffDate, DropOffTime, CurrencyCode; //TODO TotalPrice löschen, Readonly zusätzlich : DropOffDate, DropOffTime
   field ( readonly ) CreatedAt, CreatedBy, LastChangedAt, LastChangedBy, LastLocalChangedAt;
-  field ( mandatory ) CustomerID, ContainerID, Category;
+  field ( mandatory ) CustomerID, ContainerID, Category, DestCity, DestCountryCode, DestPostalCode, DestStreet, DeliveryDate;
 
   // Providing Methods
   action ( features : instance ) setDropOffDate result [1] $self;
+  //  internal action setStatusFinished;
   action ( features : instance ) setStatusFinished result [1] $self;
   internal action recalcPricePerT;
 
   // Determination (handle side effects of modified enities instances)
   determination setInitialStatus on modify { create; }
-   determination calculatePricePerT on modify { field Category;}
+  determination calculatePricePerT on modify { field Category; }
   determination calculateOrderID on save { create; }
 
   // Validation at Creating

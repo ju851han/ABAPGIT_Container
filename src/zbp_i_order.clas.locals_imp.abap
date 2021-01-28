@@ -16,17 +16,20 @@ CLASS lhc_Order DEFINITION INHERITING FROM cl_abap_behavior_handler.
     METHODS setDropOffDate FOR MODIFY
       IMPORTING keys FOR ACTION Order~setDropOffDate RESULT result.
 
-    METHODS setInitialStatus FOR DETERMINE ON MODIFY
-      IMPORTING keys FOR Order~setInitialStatus.
-
-    METHODS calculateOrderID FOR DETERMINE ON SAVE
-      IMPORTING keys FOR Order~calculateOrderID.
-
     METHODS setStatusFinished FOR MODIFY
       IMPORTING keys FOR ACTION Order~setStatusFinished RESULT result.
 
+    METHODS setInitialStatus FOR DETERMINE ON MODIFY
+      IMPORTING keys FOR Order~setInitialStatus.
+
     METHODS recalcPricePerT FOR MODIFY
       IMPORTING keys FOR ACTION order~recalcPricePerT.
+
+    METHODS calculatePricePerT FOR DETERMINE ON MODIFY
+      IMPORTING keys FOR Order~calculatePricePerT.
+
+    METHODS calculateOrderID FOR DETERMINE ON SAVE
+      IMPORTING keys FOR Order~calculateOrderID.
 
     METHODS validateContainer FOR VALIDATE ON SAVE
       IMPORTING keys FOR Order~validateContainer.
@@ -36,8 +39,6 @@ CLASS lhc_Order DEFINITION INHERITING FROM cl_abap_behavior_handler.
 
     METHODS validateDates FOR VALIDATE ON SAVE
       IMPORTING keys FOR Order~validateDates.
-    METHODS calculatePricePerT FOR DETERMINE ON MODIFY
-      IMPORTING keys FOR Order~calculatePricePerT.
 
 
 ENDCLASS.
@@ -97,7 +98,6 @@ CLASS lhc_Order IMPLEMENTATION.
     result = VALUE #( FOR order IN orders
                          ( %tky      =   order-%tky
                            %param    =   order ) ).
-*   TODO  call setStatusFinished.
   ENDMETHOD.
 
   METHOD setInitialStatus.
@@ -178,6 +178,7 @@ CLASS lhc_Order IMPLEMENTATION.
                         ( %tky   = order-%tky
                           %param = order ) ).
   ENDMETHOD.
+
   METHOD validateContainer.
     " Read relevant order instance data
     READ ENTITIES OF zi_order_m IN LOCAL MODE
@@ -276,7 +277,7 @@ CLASS lhc_Order IMPLEMENTATION.
                        %state_area = 'VALIDATE_DATES' )
         TO reported-order.
 
-      IF order-DesiredDropOffDate <= order-DeliveryDate.
+      IF order-DesiredDropOffDate <= order-DeliveryDate AND order-DesiredDropOffDate > '00000000' .
         APPEND VALUE #( %tky = order-%tky ) TO failed-order.
         APPEND VALUE #( %tky               = order-%tky
                         %state_area        = 'VALIDATE_DATES'

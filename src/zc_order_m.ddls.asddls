@@ -61,13 +61,13 @@ define root view entity ZC_ORDER_M
       selectionField: [ { position: 30 } ] }
       @Semantics.amount.currencyCode: 'CurrencyCode'
       PricePerT,
-          CurrencyCode,
+      CurrencyCode,
       //      @UI: {
       //      lineItem:       [ { position: 30, importance: #MEDIUM } ],
       //      identification: [ { position: 30, label: 'Total Price' } ] }
       //      @Semantics.amount.currencyCode: 'CurrencyCode'
       //      TotalPrice,
-  
+
       @UI: {
       lineItem:       [ { position: 40, importance: #LOW } ],
       identification: [ { position: 40, label: 'Remarks' } ] }
