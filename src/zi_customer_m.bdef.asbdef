@@ -12,12 +12,13 @@ etag master LastLocalChangedAt
   create;
   update;
   delete;
+
   //Access rights for the fields
   field ( numbering : managed, readonly ) CustomerUUID;
   field ( readonly ) CustomerID;
   field ( readonly ) CreatedAt, CreatedBy, LastChangedAt, LastChangedBy, LastLocalChangedAt;
 
-//
+  // Determination (handle side effects of modified enities instances)
   determination calculateCustomerID on save { create; }
 
   // Mapping between zat_order and zdt_order
