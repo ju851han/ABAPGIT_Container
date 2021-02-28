@@ -2,7 +2,7 @@ projection;
 use draft;
 
 define behavior for ZC_Customer_M // alias <alias_name>
-//use etag
+use etag
 {
   use create;
   use update;

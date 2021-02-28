@@ -11,7 +11,8 @@ ENDCLASS.
 
 
 
-CLASS zcl_create_demo_data IMPLEMENTATION.
+CLASS ZCL_CREATE_DEMO_DATA IMPLEMENTATION.
+
 
   METHOD if_oo_adt_classrun~main.
 *   define internal tables (itab)

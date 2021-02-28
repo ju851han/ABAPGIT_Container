@@ -11,7 +11,9 @@ ENDCLASS.
 
 
 
-CLASS zcl_delete_demo_data IMPLEMENTATION.
+CLASS ZCL_DELETE_DEMO_DATA IMPLEMENTATION.
+
+
   METHOD if_oo_adt_classrun~main.
 *   Delete the possible entries in the database table - in case it was already filled
     DELETE FROM zat_container.
@@ -21,5 +23,4 @@ CLASS zcl_delete_demo_data IMPLEMENTATION.
     DELETE FROM zdt_customer.
     out->write( 'Data deleted successfully!').
   ENDMETHOD.
-
 ENDCLASS.

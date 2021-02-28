@@ -71,7 +71,8 @@ ENDCLASS.
 
 
 
-CLASS zcl_msg_exception_order IMPLEMENTATION.
+CLASS ZCL_MSG_EXCEPTION_ORDER IMPLEMENTATION.
+
 
   METHOD constructor ##ADT_SUPPRESS_GENERATION.
     CALL METHOD super->constructor
@@ -95,6 +96,4 @@ CLASS zcl_msg_exception_order IMPLEMENTATION.
     me->containerid = containerid.
 *    |{ containerid ALPHA = OUT }|.
   ENDMETHOD.
-
-
 ENDCLASS.
